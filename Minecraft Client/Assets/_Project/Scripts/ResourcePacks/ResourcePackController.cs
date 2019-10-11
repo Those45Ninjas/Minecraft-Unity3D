@@ -24,7 +24,8 @@ public class ResourcePackController : MonoBehaviour
 			}
 		};
 
-		ActiveResourcePack = new ResourcePack();
-		ActiveResourcePack.LoadFromPack(ResourcePackToLoad);
+		ActiveResourcePack = new ResourcePack(ResourcePackToLoad);
+
+		// Pack.BlockState blockState = ActiveResourcePack.GetBlock("birch_wood");
 	}
 }
