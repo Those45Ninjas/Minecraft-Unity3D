@@ -6,9 +6,8 @@ using Pack.JsonConverters;
 namespace Pack {
 
 	public class BlockState {
-		[JsonConverter(typeof(DictionaryConverter))]
+		[JsonConverter(typeof(BlockVariantConverter))]
 		public Dictionary<string, List<ModelVariant>> variants;
-
 	}
 
 	public class ModelVariant {

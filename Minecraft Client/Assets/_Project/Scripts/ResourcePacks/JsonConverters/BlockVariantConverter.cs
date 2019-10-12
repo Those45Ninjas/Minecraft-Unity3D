@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace  Pack.JsonConverters
 {
-	public class DictionaryConverter : JsonConverter
+	public class BlockVariantConverter : JsonConverter
 	{
 		public override bool CanConvert(Type objectType)
 		{
