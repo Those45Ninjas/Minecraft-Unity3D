@@ -12,6 +12,9 @@ public class ResourcePackController : MonoBehaviour
 
 	public ResourcePack ActiveResourcePack;
 
+	public Logger logger;
+	private FileLogger fileLogger;
+
 	void Start()
 	{
 		JsonConvert.DefaultSettings = () => new JsonSerializerSettings
@@ -24,8 +27,16 @@ public class ResourcePackController : MonoBehaviour
 			}
 		};
 
-		ActiveResourcePack = new ResourcePack(ResourcePackToLoad);
+		fileLogger = new FileLogger("packs");
+		logger = new Logger(fileLogger);
 
-		// Pack.BlockState blockState = ActiveResourcePack.GetBlock("birch_wood");
+		ActiveResourcePack = new ResourcePack(ResourcePackToLoad,logger);
+
+		StartCoroutine(ActiveResourcePack.LoadPack());
+	}
+
+	void FixedUpdate()
+	{
+		fileLogger.Flush();
 	}
 }

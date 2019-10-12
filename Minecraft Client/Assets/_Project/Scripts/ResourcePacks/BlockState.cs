@@ -1,12 +1,13 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using Pack.JsonConverters;
 
 namespace Pack {
 
 	public class BlockState {
-
-		public Dictionary<string, ModelVariant> variants;
+		[JsonConverter(typeof(DictionaryConverter))]
+		public Dictionary<string, List<ModelVariant>> variants;
 
 	}
 

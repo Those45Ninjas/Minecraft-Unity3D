@@ -23,6 +23,10 @@ namespace Pack {
 		// For minecraft 1.13 and 1.14 a value of 4 is used.
 		public int Format { get { return pack.pack_format; } }
 
+		// The name of the pack. (set by the pack manager and has nothing to do with minecraft).
+		[System.NonSerialized]
+		public string Name;
+
 		public override string ToString() {
 			return string.Format("Description: {1}, Format: {0}", Format, Description);
 		}
