@@ -34,6 +34,9 @@ namespace Pack {
 	[Serializable]
 	public class ModelElement
 	{
+		// TODO: Add a better system to clamp these values.
+		// Do they need to be clamped, Does the wiki lie?
+		// This will be used quite a bit in the chunk rendering so should add it to a global helper.
 		[SerializeField]
 		private Vector3 from;
 		public Vector3 From
@@ -51,7 +54,7 @@ namespace Pack {
 				from.z = Mathf.Clamp(value.z, -16, 32);
 			}
 		}
-		
+
 		[SerializeField]
 		private Vector3 to;
 		public Vector3 To
@@ -72,19 +75,18 @@ namespace Pack {
 	}
 
 	[Serializable]
-	public class ElementRotation {
-		[SerializeField]
-		private int[] origin;
-		public Vector3Int Origin {
-			get => new Vector3Int(origin[0], origin[0], origin[0]);
-			set {
-				
-			}
-		}
+	public class ElementRotation
+	{
+
+		[JsonProperty("origin")]
+		Vector3Int Origin;
+
 	}
 
 	[Serializable]
 	public class ModelFace {
+
+		// TODO: Move this into a rectInt.
 		[SerializeField]
 		private int[] uv = new int[4];
 
@@ -123,6 +125,8 @@ namespace Pack {
 	[Serializable]
 	public class ModelPositions
 	{
+		// Look at this mess! Argh.
+		
 		[JsonProperty("thridperson_righthand")]
 		public ModelTransform TpsRight = new ModelTransform();
 
