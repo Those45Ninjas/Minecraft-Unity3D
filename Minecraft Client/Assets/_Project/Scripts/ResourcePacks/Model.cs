@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System; 
 using System.Text;
+using Newtonsoft.Json;
 
 namespace Pack {
 
@@ -27,38 +28,45 @@ namespace Pack {
 
 		public ModelTextures textures;
 		public ModelPositions display;
-		public ModelElement elements;
+		public ModelElement[] elements;
 	}
 
 	[Serializable]
 	public class ModelElement
 	{
 		[SerializeField]
-		private int[] from = new int[3];
-		public Vector3Int From {
-			get => new Vector3Int (
+		private Vector3 from;
+		public Vector3 From
+		{
+			get => new Vector3
+			(
 				Mathf.Clamp(from[0], -16, 32),
 				Mathf.Clamp(from[1], -16, 32),
 				Mathf.Clamp(from[2], -16, 32)
 			);
-			set {
-				from[0] = value.x;
-				from[1] = value.y;
-				from[2] = value.z;
+			set
+			{
+				from.x = Mathf.Clamp(value.x, -16, 32);
+				from.y = Mathf.Clamp(value.y, -16, 32);
+				from.z = Mathf.Clamp(value.z, -16, 32);
 			}
 		}
+		
 		[SerializeField]
-		private int[] to = new int[3];
-		public Vector3Int To {
-			get => new Vector3Int (
+		private Vector3 to;
+		public Vector3 To
+		{
+			get => new Vector3
+			(
 				Mathf.Clamp(to[0], -16, 32),
 				Mathf.Clamp(to[1], -16, 32),
 				Mathf.Clamp(to[2], -16, 32)
 			);
-			set {
-				to[0] = value.x;
-				to[1] = value.y;
-				to[2] = value.z;
+			set
+			{
+				to.x = Mathf.Clamp(value.x, -16, 32);
+				to.y = Mathf.Clamp(value.y, -16, 32);
+				to.z = Mathf.Clamp(value.z, -16, 32);
 			}
 		}
 	}
@@ -115,76 +123,55 @@ namespace Pack {
 	[Serializable]
 	public class ModelPositions
 	{
-		[Newtonsoft.Json.JsonProperty("thridperson_righthand")]
+		[JsonProperty("thridperson_righthand")]
 		public ModelTransform TpsRight = new ModelTransform();
 
-		[Newtonsoft.Json.JsonProperty("thridperson_lefthand")]
+		[JsonProperty("thridperson_lefthand")]
 		public ModelTransform TpsLeft  = new ModelTransform();
 
-		[Newtonsoft.Json.JsonProperty("firstperson_righthand")]
+		[JsonProperty("firstperson_righthand")]
 		public ModelTransform FpsRight = new ModelTransform();
 
-		[Newtonsoft.Json.JsonProperty("firstperson_lefthand")]
+		[JsonProperty("firstperson_lefthand")]
 		public ModelTransform FpsLeft = new ModelTransform();
 		
-		[Newtonsoft.Json.JsonProperty("gui")]
+		[JsonProperty("gui")]
 		public ModelTransform GUI = new ModelTransform();
 
-		[Newtonsoft.Json.JsonProperty("head")]
+		[JsonProperty("head")]
 		public ModelTransform Head = new ModelTransform();
 		
-		[Newtonsoft.Json.JsonProperty("ground")]
+		[JsonProperty("ground")]
 		public ModelTransform Ground = new ModelTransform();
 
-		[Newtonsoft.Json.JsonProperty("fixed")]
+		[JsonProperty("fixed")]
 		public ModelTransform Framed = new ModelTransform();
 	}
 	[Serializable]
-	public class ModelTransform {
+	public class ModelTransform
+	{
+		[Newtonsoft.Json.JsonProperty("rotation")]
+		public Vector3Int Rotation;
 
-		// The rotation of the model.
 		[SerializeField]
-		private float[] rotation = new float[3];
-
-		public Vector3 Rotation {
-			get => new Vector3(rotation[0], rotation[1],	rotation[2]);
-			set {
-				rotation[0] = value.x;
-				rotation[1] = value.y;
-				rotation[2] = value.z;
-			}
-		}
-
-		// The translation of the model.
-		[SerializeField]
-		private float[] translation = new float[3];
-
+		private Vector3 translation;
 		public Vector3 Translation {
-
 			// The wiki says the range is between -80 and 80.
 			get => new Vector3(
-				Mathf.Clamp(translation[0], -80f, 80f),
-				Mathf.Clamp(translation[1], -80f, 80f),
-				Mathf.Clamp(translation[2], -80f, 80f)
+				Mathf.Clamp(translation.x, -80f, 80f),
+				Mathf.Clamp(translation.y, -80f, 80f),
+				Mathf.Clamp(translation.z, -80f, 80f)
 			);
-			set {
-				translation[0] = value.x;
-				translation[1] = value.y;
-				translation[2] = value.z;
+			set
+			{
+				translation.x = Mathf.Clamp(value.x, -80f, 80f);
+				translation.y = Mathf.Clamp(value.y, -80f, 80f);
+				translation.z = Mathf.Clamp(value.z, -80f, 80f);
 			}
 		}
 
 		// The scale of the model.
-		[SerializeField]
-		private float[] scale = new float[3];
-
-		public Vector3 Scale {
-			get => new Vector3(scale[0], scale[1],	scale[2]);
-			set {
-				scale[0] = value.x;
-				scale[1] = value.y;
-				scale[2] = value.z;
-			}
-		}
+		[Newtonsoft.Json.JsonProperty("scale")]
+		public Vector3 Scale = Vector3.one;
 	}
 }

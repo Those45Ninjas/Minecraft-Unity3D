@@ -17,16 +17,6 @@ public class ResourcePackController : MonoBehaviour
 
 	void Start()
 	{
-		JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-		{
-			Converters = new List<JsonConverter>
-			{
-				new Vector3IntConverter(),
-				new Vector3IntConverter(),
-				new RectIntConverter()
-			}
-		};
-
 		fileLogger = new FileLogger("packs");
 		logger = new Logger(fileLogger);
 

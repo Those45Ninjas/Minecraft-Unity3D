@@ -34,7 +34,11 @@ public class FileLogger : ILogHandler
 		// Log the date, type and message.
 		Writer.Write(DateTime.Now.ToString().PadRight(23));
 		Writer.Write(logType.ToString().PadRight(11));
-		Writer.WriteLine(format, args);
+
+		if(args.Length > 0)
+			Writer.WriteLine(format, args);
+		else
+			Writer.WriteLine(format);
 
 		// Update the needs flush flag.
 		NeedsFlush = true;

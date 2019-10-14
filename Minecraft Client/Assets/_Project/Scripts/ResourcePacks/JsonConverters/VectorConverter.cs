@@ -7,16 +7,19 @@ using Newtonsoft.Json.Converters;
 
 namespace Pack.JsonConverters
 {
-	public abstract class PackVectorConverter : JsonConverter
+	public abstract class VectorConverter : JsonConverter
 	{
 		public override abstract bool CanConvert(Type objectType);
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
-			List<int> components = new List<int>(4);
-			while(reader.ReadAsInt32() != null)
-				components.Add((int)reader.Value);
+			// The list of components for the vector.
+			List<float> components = new List<float>(4);
 
+			while(reader.ReadAsDouble() != null)
+				components.Add(System.Convert.ToSingle(reader.Value));
+
+			// Pass these components off to get converted into the correct type (array to vector3 for example)
 			return ConvertComponents(components.ToArray());
 		}
 
@@ -24,13 +27,13 @@ namespace Pack.JsonConverters
 		{
 			writer.WriteStartArray();
 
-			foreach(int component in GetComponents(value))
+			foreach(float component in GetComponents(value))
 				writer.WriteValue(component);
 
 			writer.WriteEndArray();
 		}
 
-		public abstract int[] GetComponents (object value);
-		public abstract object ConvertComponents(int[] components);
+		public abstract float[] GetComponents (object value);
+		public abstract object ConvertComponents(float[] components);
 	}
 }

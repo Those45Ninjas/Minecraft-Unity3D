@@ -7,7 +7,7 @@ using Newtonsoft.Json.Converters;
 
 namespace Pack.JsonConverters
 {
-	public class Vector2IntConverter : PackVectorConverter
+	public class Vector2IntConverter : VectorIntConverter
 	{
 		public override bool CanConvert(Type objectType)
 		{
