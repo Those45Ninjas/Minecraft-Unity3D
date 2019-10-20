@@ -6,14 +6,9 @@ using UnityEngine;
 
 namespace  Pack.JsonConverters
 {
-	public class BlockVariantConverter : JsonConverter
+	public class BlockVariantConverter : JsonConverter<Dictionary<String, List<ModelVariant>>>
 	{
-		public override bool CanConvert(Type objectType)
-		{
-			return objectType == typeof(Dictionary<string, List<ModelVariant>>);
-		}
-
-		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+		public override Dictionary<string, List<ModelVariant>> ReadJson(JsonReader reader, Type objectType, Dictionary<string, List<ModelVariant>> existingValue, bool hasExistingValue, JsonSerializer serializer)
 		{
 			// Do some checks to see if we are reading something that resembles a block variant.
 			if (reader.TokenType == JsonToken.Null)
@@ -21,6 +16,7 @@ namespace  Pack.JsonConverters
 				Debug.LogError("Variant is null");
 				return null;
 			}
+
 			if(reader.TokenType != JsonToken.StartObject)
 				throw new JsonReaderException("Unexpected token while reading block variants");
 
@@ -56,9 +52,9 @@ namespace  Pack.JsonConverters
 			return dictionary;
 		}
 
-		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+		public override void WriteJson(JsonWriter writer, Dictionary<string, List<ModelVariant>> value, JsonSerializer serializer)
 		{
-
+			throw new NotImplementedException();
 		}
 	}
 }

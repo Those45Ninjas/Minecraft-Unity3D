@@ -1,39 +1,38 @@
 using System;
 using UnityEngine;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using Newtonsoft;
-using Newtonsoft.Json.Converters;
 
 namespace Pack.JsonConverters
 {
-	public class RectIntConverter : VectorIntConverter
+	public class RectIntConverter : JsonConverter<RectInt>
 	{
-		public override bool CanConvert(Type objectType)
+		public override RectInt ReadJson(JsonReader reader, Type objectType, RectInt existingValue, bool hasExistingValue, JsonSerializer serializer)
 		{
-			return typeof(RectInt).IsAssignableFrom(objectType);
-		}
+			// Read a list from the json.
+			var list = ConverterHelpers.ReadIntArray(reader);
 
-		public override object ConvertComponents(int[] components)
-		{
-			return new RectInt()
+			// Check to see if there is enough components to read a vector2int.
+			if(list.Count < 4)
+				throw new JsonReaderException("Not enough components to create a RectInt");
+
+			return new RectInt ()
 			{
-				xMin = components[0],
-				yMin = components[1],
-				xMax = components[2],
-				yMax = components[3]
+				xMin = list[0],
+				yMin = list[1],
+				xMax = list[2],
+				yMax = list[3]
 			};
 		}
 
-		public override int[] GetComponents(object value)
+		public override void WriteJson(JsonWriter writer, RectInt value, JsonSerializer serializer)
 		{
-			RectInt rect = (RectInt)value;
-			return new int[] {
-				rect.xMin,
-				rect.yMin,
-				rect.xMax,
-				rect.yMax
-			};
+			// Write the vector.
+			writer.WriteStartArray();
+			writer.WriteValue(value.xMin);
+			writer.WriteValue(value.yMin);
+			writer.WriteValue(value.xMax);
+			writer.WriteValue(value.yMax);
+			writer.WriteEndArray();
 		}
 	}
 }

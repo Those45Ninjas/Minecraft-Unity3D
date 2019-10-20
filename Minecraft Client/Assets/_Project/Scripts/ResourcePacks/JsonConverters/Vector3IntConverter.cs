@@ -1,32 +1,31 @@
 using System;
 using UnityEngine;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using Newtonsoft;
-using Newtonsoft.Json.Converters;
 
 namespace Pack.JsonConverters
 {
-	public class Vector3IntConverter : VectorIntConverter
+	public class Vector3IntConverter : JsonConverter<Vector3Int>
 	{
-		public override bool CanConvert(Type objectType)
+		public override Vector3Int ReadJson(JsonReader reader, Type objectType, Vector3Int existingValue, bool hasExistingValue, JsonSerializer serializer)
 		{
-			return typeof(Vector3Int).IsAssignableFrom(objectType);
+			// Read a list from the json.
+			var list = ConverterHelpers.ReadIntArray(reader);
+
+			// Check to see if there is enough components to read a vector2int.
+			if(list.Count < 3)
+				throw new JsonReaderException("Not enough components to create a Vector3Int");
+
+			return new Vector3Int(list[0], list[1], list[2]);
 		}
 
-		public override object ConvertComponents(int[] components)
+		public override void WriteJson(JsonWriter writer, Vector3Int value, JsonSerializer serializer)
 		{
-			return new Vector3Int(components[0], components[1], components[2]);
-		}
-
-		public override int[] GetComponents(object value)
-		{
-			Vector3Int vector = (Vector3Int)value;
-			return new int[] {
-				vector.x,
-				vector.y,
-				vector.z
-			};
+			// Write the vector.
+			writer.WriteStartArray();
+			writer.WriteValue(value.x);
+			writer.WriteValue(value.y);
+			writer.WriteValue(value.z);
+			writer.WriteEndArray();
 		}
 	}
 }
